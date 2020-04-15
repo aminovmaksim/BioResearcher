@@ -9,7 +9,7 @@ import lombok.Data;
 public class Variable {
 
     @SerializedName(value = "Id")
-    private int id;
+    private Integer id;
     @SerializedName(value = "Value")
-    private int value;
+    private Integer value;
 }

@@ -13,7 +13,7 @@ public class AnalyzeResponse {
     private static final String STATUS_STABILIZING = "Stabilizing";
 
     @SerializedName(value = "Time")
-    private int time;
+    private Integer time;
     @SerializedName(value = "ErrorMessages")
     private List<String> errorMessages;
     @SerializedName(value = "DebugMessages")
