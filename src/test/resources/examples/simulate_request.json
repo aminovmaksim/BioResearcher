@@ -1,0 +1,79 @@
+{
+  "Model": {
+    "Name": "model 1",
+    "Variables": [
+      {
+        "Name": "I",
+        "Id": 56,
+        "RangeFrom": 0,
+        "RangeTo": 4,
+        "Formula": "4"
+      },
+      {
+        "Name": "O",
+        "Id": 57,
+        "RangeFrom": 0,
+        "RangeTo": 4,
+        "Formula": "ceil(var(58)/3)"
+      },
+      {
+        "Name": "A",
+        "Id": 58,
+        "RangeFrom": 0,
+        "RangeTo": "4",
+        "Formula": "2*(var(56)-1)-(floor(2/3*var(59)))+1"
+      },
+      {
+        "Name": "B",
+        "Id": 59,
+        "RangeFrom": 0,
+        "RangeTo": 9,
+        "Formula": "var(58)"
+      }
+    ],
+    "Relationships": [
+      {
+        "Id": 60,
+        "FromVariable": 56,
+        "ToVariable": 58,
+        "Type": "Activator"
+      },
+      {
+        "Id": 61,
+        "FromVariable": 58,
+        "ToVariable": 59,
+        "Type": "Activator"
+      },
+      {
+        "Id": 62,
+        "FromVariable": 59,
+        "ToVariable": 58,
+        "Type": "Inhibitor"
+      },
+      {
+        "Id": 63,
+        "FromVariable": 58,
+        "ToVariable": 57,
+        "Type": "Activator"
+      }
+    ]
+  },
+  "Variables": [
+    {
+      "Id": 56,
+      "Value": 0
+    },
+    {
+      "Id": 57,
+      "Value": 0
+    },
+    {
+      "Id": 58,
+      "Value": 0
+    },
+    {
+      "Id": 59,
+      "Value": 0
+    }
+  ]
+}

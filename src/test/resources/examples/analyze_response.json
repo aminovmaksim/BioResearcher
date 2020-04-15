@@ -1,0 +1,72 @@
+{
+  "Time": 0,
+  "ErrorMessages": null,
+  "DebugMessages": [
+    "12:00:05.959: Logging is disabled.",
+    "12:00:06.194: The analysis took 00:00:00.2339673"
+  ],
+  "Status": "Stabilizing",
+  "Error": "",
+  "Ticks": [
+    {
+      "Time": 2,
+      "Variables": [
+        {
+          "Id": 16,
+          "Lo": 2,
+          "Hi": 2
+        },
+        {
+          "Id": 17,
+          "Lo": 2,
+          "Hi": 2
+        },
+        {
+          "Id": 18,
+          "Lo": 2,
+          "Hi": 2
+        }
+      ]
+    },
+    {
+      "Time": 1,
+      "Variables": [
+        {
+          "Id": 16,
+          "Lo": 2,
+          "Hi": 2
+        },
+        {
+          "Id": 17,
+          "Lo": 2,
+          "Hi": 2
+        },
+        {
+          "Id": 18,
+          "Lo": 2,
+          "Hi": 2
+        }
+      ]
+    },
+    {
+      "Time": 0,
+      "Variables": [
+        {
+          "Id": 16,
+          "Lo": 2,
+          "Hi": 2
+        },
+        {
+          "Id": 17,
+          "Lo": 0,
+          "Hi": 4
+        },
+        {
+          "Id": 18,
+          "Lo": 2,
+          "Hi": 2
+        }
+      ]
+    }
+  ]
+}

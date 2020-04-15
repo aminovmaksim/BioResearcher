@@ -1,0 +1,25 @@
+{
+  "Variables": [
+    {
+      "Id": 56,
+      "Value": 1
+    },
+    {
+      "Id": 57,
+      "Value": 0
+    },
+    {
+      "Id": 58,
+      "Value": 0
+    },
+    {
+      "Id": 59,
+      "Value": 0
+    }
+  ],
+  "ErrorMessages": null,
+  "DebugMessages": [
+    "09:55:37.711: Logging is disabled.",
+    "09:55:37.712: The simulation took 00:00:00.0001504"
+  ]
+}

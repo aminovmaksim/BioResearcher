@@ -1,0 +1,40 @@
+{
+  "Name": "model 1",
+  "Variables": [
+    {
+      "Name": "I",
+      "Id": 16,
+      "RangeFrom": 0,
+      "RangeTo": 4,
+      "Formula": "2"
+    },
+    {
+      "Name": "O",
+      "Id": 17,
+      "RangeFrom": 0,
+      "RangeTo": 4,
+      "Formula": ""
+    },
+    {
+      "Name": "A",
+      "Id": 18,
+      "RangeFrom": 0,
+      "RangeTo": 4,
+      "Formula": ""
+    }
+  ],
+  "Relationships": [
+    {
+      "Id": 19,
+      "FromVariable": 16,
+      "ToVariable": 18,
+      "Type": "Activator"
+    },
+    {
+      "Id": 20,
+      "FromVariable": 18,
+      "ToVariable": 17,
+      "Type": "Activator"
+    }
+  ]
+}
