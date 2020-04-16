@@ -19,6 +19,7 @@
 		<java.version>11</java.version>
 		<gson.version>2.8.6</gson.version>
 		<junit.version>4.13</junit.version>
+		<bootstrap.version>4.2.1</bootstrap.version>
 	</properties>
 
 	<dependencies>
@@ -64,6 +65,24 @@
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+
+		<!-- hot swapping, disable cache for template, enable live reload -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Optional, for bootstrap -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>${bootstrap.version}</version>
 		</dependency>
 
 	</dependencies>
