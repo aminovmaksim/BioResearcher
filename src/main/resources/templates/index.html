@@ -1,18 +1,71 @@
 <!doctype html>
 
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-
-    <title>The HTML5 Herald</title>
-    <meta name="description" content="The HTML5 Herald">
-    <meta name="author" content="SitePoint">
-
+    <title>BioStabAnalyzer</title>
 </head>
 
 <body>
 
-<b> sadasd </b>
+<span id="vars_size" hidden th:text="${vars.size()}"></span>
+
+<table id="vars_table">
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Formula</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Block</th>
+        <th>Value</th>
+    </tr>
+    <tr th:each="variable : ${vars}">
+        <td th:text="${variable.id}"></td>
+        <td th:text="${variable.name}"></td>
+        <td th:text="${variable.formula}"></td>
+        <td th:text="${variable.rangeFrom}"></td>
+        <td th:text="${variable.rangeTo}"></td>
+        <td><input type="checkbox" th:id="${variable.id} + '@block_cb'" onclick="onClick_analyze(this)" /></td>
+        <td><input type="number" th:id="${variable.id} + '@block_value'" value="0" disabled></td>
+    </tr>
+</table>
+
+<form id="block_var_form" action="/block_var" method="get">
+    <input name="vars" type="text" id="block_var_data" hidden="hidden" value="">
+    <button type="submit" onclick="onClick_analyze()">Analyze</button>
+</form>
+
+<div th:if="${block_vars != null}" th:text="${block_vars.size()}"></div>
 
 </body>
+
+<script>
+    // creates an array of blocking values and lock/unlock input field
+    function onClick_analyze(object) {
+        // block var entity
+        function BlockVar() {
+            this.id = 0;
+            this.value = 0;
+        }
+
+        let id = object.id.split('@')[0];
+        let input_value = document.getElementById(id + '@block_value');
+        input_value.disabled = !object.checked;
+
+        let vars_size = parseInt(document.getElementById("vars_size").innerText);
+        let vars_array = [];
+        for (let i = 1; i <= vars_size; i++) {
+            let id = document.getElementById("vars_table").rows[i].cells[0].innerText;
+            if (document.getElementById(id + "@block_cb").checked) {
+                let obj = new BlockVar()
+                obj['id'] = parseInt(id);
+                obj['value'] = parseInt(document.getElementById(id + "@block_value").value);
+                vars_array.push(obj);
+            }
+        }
+        document.getElementById("block_var_data").value = JSON.stringify(vars_array);
+    }
+</script>
+
 </html>
