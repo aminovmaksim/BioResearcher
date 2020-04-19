@@ -1,0 +1,19 @@
+input[type=number] {
+    width: 90%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+
+    font-family: Roboto, serif;
+    font-weight: bold;
+    font-size: 16px;
+
+    background-color: white;
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    padding: 5px 5px 5px 20px;
+}
+
+input[type=number]:disabled {
+    background-color: #fee8ff;
+}

@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @Builder
-public class BioModel {
+public class BioModel implements Cloneable {
 
     @SerializedName(value = "Name")
     private String name;
@@ -30,6 +30,8 @@ public class BioModel {
         private Integer rangeTo;
         @SerializedName(value = "Formula")
         private String formula;
+        private boolean blocked;
+        private Integer value;
     }
 
     @Data

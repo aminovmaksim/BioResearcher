@@ -1,0 +1,85 @@
+body {
+    font-family: Roboto, serif;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+table {
+    width: 100%;
+    margin-top: 30px;
+    text-align: center;
+
+    border-collapse:collapse;
+}
+
+tr:hover {background-color: #f5f5f5;}
+
+th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #d48bd9;
+    color: white;
+}
+
+td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+th, td {
+    border-bottom: 2px solid #d48bd9;
+}
+
+.lds-dual-ring {
+    width: 25px;
+    height: 25px;
+}
+.lds-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 6px solid #d48bd9;
+    border-color: #d48bd9 transparent #d48bd9 transparent;
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.center_form {
+    width: 100%;
+    display: inline-block;
+    top: 10px;
+    position: relative;
+}
+
+.analyze_btn_loading {
+    position: relative;
+    margin: 7px;
+    display: none;
+}
+
+.stab_result {
+    position: absolute;
+    margin: 12px;
+    margin-left: 10%;
+}
+
+.stab_image {
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+}
+
+.chart {
+    border-radius: 20px;
+    height: 300px;
+    width: 100%;
+}

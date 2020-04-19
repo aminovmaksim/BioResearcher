@@ -4,11 +4,12 @@ import com.devian.biostabanalyzer.model.domain.analyzer.Tick;
 import com.google.gson.annotations.SerializedName;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @Builder
-public class AnalyzeResponse {
+public class AnalyzeResponse implements Serializable {
 
     private static final String STATUS_STABILIZING = "Stabilizing";
 
