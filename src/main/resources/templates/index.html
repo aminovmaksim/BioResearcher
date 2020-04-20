@@ -3,7 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>BioStabAnalyzer</title>
+    <title>BioResearcher</title>
 
     <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/checkbox.css}">
@@ -15,6 +15,15 @@
 <body>
 
 <span id="vars_size" hidden th:text="${vars.size()}"></span>
+
+<div id="menu" class="menu">
+    <div class="new_btn_div">
+        <form id="new_btn" action="/new_model" method="get">
+            <button class="common_button menu_button" type="submit">New model</button>
+        </form>
+    </div>
+    <button class="common_button menu_button" type="submit">Help</button>
+</div>
 
 <table id="vars_table">
     <tr>
@@ -46,7 +55,7 @@
     <div class="analyze_btn_div">
         <form id="block_var_form" action="/block_var" method="get">
             <input name="vars" type="text" id="block_var_data" hidden="hidden" value="">
-            <button class="analyze_button" disabled id="block_var_button" type="submit" onclick="analyze()">Analyze</button>
+            <button class="common_button" disabled id="block_var_button" type="submit" onclick="analyze()">Analyze</button>
         </form>
     </div>
     <div class="stab_result" th:if="${stab != null}">
@@ -58,7 +67,7 @@
     </div>
 </div>
 
-<div th:hidden="${stab == null}" id="result_chart" class="result_chart">
+<div id="result_chart" class="result_chart">
     <button type="button" class="collapsible">Simulate result</button>
     <div class="result_content">
         <div class="simulation_controls">
@@ -66,9 +75,17 @@
                 <button id="btn_steps_less" class="round_btn" onclick="less_steps()">-</button>
                 <input id="input_steps" class="simulation_input" type="number" value="10" onchange="check_steps()">
                 <button id="btn_steps_more" class="round_btn" onclick="more_steps()">+</button>
-                <button class="analyze_button" id="btn_simulate" type="submit" onclick="simulate()">Simulate</button>
+                <button class="common_button" id="btn_simulate" type="submit" onclick="simulate()">Simulate</button>
         </div>
         <canvas id="chart" class="chart"></canvas>
+    </div>
+</div>
+
+
+<div id="testing_lab" class="testing_lab">
+    <button type="button" class="collapsible testing_lab_btn">Testing lab</button>
+    <div class="result_content">
+
     </div>
 </div>
 

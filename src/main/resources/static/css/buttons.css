@@ -1,9 +1,10 @@
-.analyze_button {
+.common_button {
     background-color: #d48bd9;
     border: none;
     color: white;
     height: 40px;
     padding: 7px 30px;
+    margin: 5px;
     text-align: center;
     cursor: pointer;
     -webkit-transition-duration: 0.4s; /* Safari */
@@ -25,14 +26,14 @@ button:hover {background-color: #ba4ec2}
 
 button:hover:disabled {background-color: #cbc2cc}
 
-.analyze_button:active {
+.common_button:active {
     background-color: #ba4ec2;
     box-shadow: 0 5px #666;
     transform: translateY(7px);
 }
 
 .analyze_btn_div {
-    margin: 10px;
+    margin: 5px;
 }
 
 .collapsible {
@@ -102,6 +103,21 @@ button:hover:disabled {background-color: #cbc2cc}
 .simulation_controls {
     display: flex;
     height: 50px;
-    margin: 15px;
+    margin: 10px 10px 10px 20px;
     align-items: center
+}
+
+.menu_button {
+    background: #a0abf2;
+}
+
+.testing_lab_btn {
+    background-color: #f06cb2;
+}
+.testing_lab_btn:hover {
+    background-color: #e32d8e;
+}
+
+.submit {
+    margin-left: 10px;
 }

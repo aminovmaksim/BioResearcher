@@ -12,7 +12,11 @@ for (let i = 0; i < coll.length; i++) {
     });
 }
 
-showChart();
+let chart_el = document.getElementById('chart');
+let ctx = chart_el.getContext('2d');
+let chart = new Chart(document.getElementById("chart"), {
+    type : "line"
+});
 
 function unlock_analyze_button() {
     document.getElementById("block_var_button").disabled = false;
@@ -98,16 +102,11 @@ function simulate() {
         document.getElementById("loading_wheel").style.display = "none";
         let data = JSON.parse(JSON.parse(xhr.response));
 
-        let ctx = document.getElementById('chart').getContext('2d');
+        let chart_el = document.getElementById('chart');
+        let ctx = chart_el.getContext('2d');
         let chart = new Chart(document.getElementById("chart"), data);
 
     };
 
     xhr.send();
-
-}
-
-function showChart() {
-    let ctx = document.getElementById('chart').getContext('2d');
-    let chart = new Chart(document.getElementById("chart"), {});
 }

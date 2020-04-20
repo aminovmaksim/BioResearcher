@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>BioResearcher</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/new_model.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/checkbox.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/buttons.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/inputs.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/text.css}">
+</head>
+
+<body>
+
+<div>
+    <p class="info">Please, insert new model json</p>
+</div>
+
+<textarea id="model_input" class="model_input"></textarea>
+<div>
+    <form id="new_btn" action="/" method="get">
+        <input name="json" type="text" id="model_json" hidden="hidden" value="">
+        <button class="common_button submit" type="submit" onclick="new_model()">Submit</button>
+    </form>
+</div>
+
+<script type="text/javascript" th:src="@{/js/new_model.js}"></script>
+
+</body>
+
+</html>
