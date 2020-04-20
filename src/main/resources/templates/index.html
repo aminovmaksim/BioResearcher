@@ -38,20 +38,20 @@
                 <span class="checkmark"></span>
             </label>
         </td>
-        <td><input type="number" th:disabled="${!variable.blocked}" th:id="${variable.id} + '@block_value'" th:value="${variable.value}" onchange="unlock_analyze_button()" style="width: 100px"></td>
+        <td><input class="value_input" type="number" th:disabled="${!variable.blocked}" th:id="${variable.id} + '@block_value'" th:value="${variable.value}" onchange="unlock_analyze_button()" style="width: 100px"></td>
     </tr>
 </table>
 
 <div class="center_form">
-    <div class="stab_result" th:if="${stab != null}">
-        <img class="stab_image" th:src="${stab == 'Stabilizing'} ? 'https://biomodelanalyzer.org/images/analysis/BMA_Stable_Icon.svg' : 'https://biomodelanalyzer.org/images/analysis/BMA_Unstable_Icon.svg'" alt="">
-        <span class="stab_text" th:text="${stab}"></span>
-    </div>
     <div class="analyze_btn_div">
         <form id="block_var_form" action="/block_var" method="get">
             <input name="vars" type="text" id="block_var_data" hidden="hidden" value="">
             <button class="analyze_button" disabled id="block_var_button" type="submit" onclick="analyze()">Analyze</button>
         </form>
+    </div>
+    <div class="stab_result" th:if="${stab != null}">
+        <img class="stab_image" th:src="${stab == 'Stabilizing'} ? 'https://biomodelanalyzer.org/images/analysis/BMA_Stable_Icon.svg' : 'https://biomodelanalyzer.org/images/analysis/BMA_Unstable_Icon.svg'" alt="">
+        <span class="stab_text" th:text="${stab}"></span>
     </div>
     <div id="loading_wheel" class="analyze_btn_loading">
         <div class="lds-dual-ring"></div>
@@ -61,23 +61,14 @@
 <div th:hidden="${stab == null}" id="result_chart" class="result_chart">
     <button type="button" class="collapsible">Simulate result</button>
     <div class="result_content">
-        <div style="width: 100%; height: 50px; margin: 10px 10px 30px;">
-            <div style="display: flex; margin-left: 50%; transform: translateX(-50%); width: 70%">
-                <div style="margin-right: 5px; text-align: center">Input number of simulation steps: </div>
+        <div class="simulation_controls">
+                <div class="simulation_text">Input number of simulation steps: </div>
                 <button id="btn_steps_less" class="round_btn" onclick="less_steps()">-</button>
-                <input id="input_steps" type="number" style="width: 75px; horiz-align: center" value="10" onchange="check_steps()">
+                <input id="input_steps" class="simulation_input" type="number" value="10" onchange="check_steps()">
                 <button id="btn_steps_more" class="round_btn" onclick="more_steps()">+</button>
-
                 <button class="analyze_button" id="btn_simulate" type="submit" onclick="simulate()">Simulate</button>
-
-<!--                <form id="simulate_form" action="/simulate" method="get">-->
-<!--                    <input name="vars" type="text" id="simulate_blocks" hidden="hidden" value="">-->
-<!--                    <input name="steps" type="text" id="simulate_steps" hidden="hidden" value="">-->
-<!--                    <button class="analyze_button" id="btn_simulate" type="submit" onclick="simulate()">Simulate</button>-->
-<!--                </form>-->
-            </div>
         </div>
-        <canvas id="chart" height="150px"></canvas>
+        <canvas id="chart" class="chart"></canvas>
     </div>
 </div>
 

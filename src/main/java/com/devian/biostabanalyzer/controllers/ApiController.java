@@ -1,7 +1,13 @@
 package com.devian.biostabanalyzer.controllers;
 
+import com.devian.biostabanalyzer.model.domain.BioModel;
+import com.devian.biostabanalyzer.model.domain.simulator.Variable;
+import com.devian.biostabanalyzer.model.internal.BlockVar;
 import com.devian.biostabanalyzer.model.internal.Chart;
+import com.devian.biostabanalyzer.model.network.SimulateRequest;
+import com.devian.biostabanalyzer.services.AnalyzeService;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -9,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +23,9 @@ import static com.devian.biostabanalyzer.model.internal.Chart.*;
 
 @RestController
 public class ApiController {
+
+    @Autowired
+    AnalyzeService analyzeService;
 
     @Autowired
     Gson gson;
@@ -26,34 +36,20 @@ public class ApiController {
             @RequestHeader(value = "block_vars") String block_vars,
             @RequestHeader(value = "steps") String steps) {
 
-        System.out.println(block_vars);
-        System.out.println(steps);
+        BioModel bioModel = gson.fromJson(biomodel, BioModel.class);
+        Type itemsListType = new TypeToken<List<BlockVar>>() {}.getType();
+        List<BlockVar> blockVars = gson.fromJson(block_vars, itemsListType);
+        int stepsCount = Integer.parseInt(steps);
 
-        List<Integer> labels = new ArrayList<>();
-        labels.add(1); labels.add(2); labels.add(3);
+        for (BlockVar blockVar : blockVars) {
+            for (int i = 0; i < bioModel.getVariables().size(); i++) {
+                if (bioModel.getVariables().get(i).getId().equals(blockVar.getId())) {
+                    bioModel.getVariables().get(i).setFormula(String.valueOf(blockVar.getValue()));
+                }
+            }
+        }
 
-        List<Integer> data1 = new ArrayList<>();
-        data1.add(3); data1.add(3); data1.add(4);
-
-        List<Integer> data2 = new ArrayList<>();
-        data2.add(0); data2.add(2); data2.add(4);
-
-        List<ChartDataset> datasets = new ArrayList<>();
-        datasets.add(ChartDataset.builder().label("A").fill(false).lineTension(0).data(data1).build());
-        datasets.add(ChartDataset.builder().label("B").fill(false).lineTension(0).data(data2).build());
-
-
-        ChartData chartData = ChartData.builder()
-                .labels(labels)
-                .datasets(datasets)
-                .build();
-
-        Chart chart = Chart.builder()
-                .type("line")
-                .data(chartData)
-                .build();
-
-        return gson.toJson(chart);
+        return gson.toJson(analyzeService.simulate(stepsCount, bioModel));
     }
 
 }

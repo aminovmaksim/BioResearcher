@@ -8,15 +8,7 @@
     color: #c88dcc;
 }
 
-.result_content{
-
-    font-family: Roboto, serif;
-    font-weight: bold;
-    font-size: 16px;
-
-    padding-top: 30px;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.2s ease-out;
-    background-color: white;
+.simulation_text {
+    margin-right: 5px;
+    text-align: center
 }

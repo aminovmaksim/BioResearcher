@@ -71,7 +71,7 @@ public class MainController {
         }
         AnalyzeResponse analyzeResponse = analyzeService.analyze(analyzeRequest);
         if (analyzeResponse.getStatus().equals("Error")) {
-            analyzeResponse.setStatus("Not stabilizing");
+            analyzeResponse.setStatus("Failed to prove stability");
         }
         System.out.println(gson.toJson(bioModel));
 

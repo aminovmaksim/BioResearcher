@@ -2,6 +2,7 @@
     background-color: #d48bd9;
     border: none;
     color: white;
+    height: 40px;
     padding: 7px 30px;
     text-align: center;
     cursor: pointer;
@@ -31,21 +32,18 @@ button:hover:disabled {background-color: #cbc2cc}
 }
 
 .analyze_btn_div {
-    margin: 10px 10px 10px 50%;
-    float: left;
-    transform: translateX(-50%);
-
+    margin: 10px;
 }
 
 .collapsible {
-    margin-top: 20px;
+    margin: 10px;
     background-color: #d48bd9;
     color: white;
     cursor: pointer;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 15px;
-    width: 100%;
+    width: 95%;
     border: none;
     text-align: left;
     outline: none;
@@ -70,6 +68,7 @@ button:hover:disabled {background-color: #cbc2cc}
     font-weight: bold;
     float: right;
     margin-left: 5px;
+    margin-right: 10px;
 }
 
 .active:after {
@@ -78,17 +77,18 @@ button:hover:disabled {background-color: #cbc2cc}
 
 .round_btn {
     margin: 5px;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
 
     color: white;
     font-size: 20px;
     font-weight: bold;
     text-align: center;
+    vertical-align: middle;
 
     border: none;
     background: #d48bd9;
-    border-radius: 20px;
+    border-radius: 30px;
 
     -webkit-transition-duration: 0.4s; /* Safari */
     transition-duration: 0.4s;
@@ -97,4 +97,11 @@ button:hover:disabled {background-color: #cbc2cc}
 .round_btn:hover {
     cursor: pointer;
     background: #ba4ec2;
+}
+
+.simulation_controls {
+    display: flex;
+    height: 50px;
+    margin: 15px;
+    align-items: center
 }

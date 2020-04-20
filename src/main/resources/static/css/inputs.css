@@ -1,9 +1,4 @@
 input[type=number] {
-    width: 90%;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 20px;
-
     font-family: Roboto, serif;
     font-weight: bold;
     font-size: 16px;
@@ -12,8 +7,22 @@ input[type=number] {
     background-position: 10px 10px;
     background-repeat: no-repeat;
     padding: 5px 5px 5px 20px;
+
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+
+    horiz-align: center;
 }
 
-input[type=number]:disabled {
+.value_input {
+    width: 90%;
+}
+
+.value_input:disabled {
     background-color: #fee8ff;
+}
+
+.simulation_input {
+    width: 75px;
 }

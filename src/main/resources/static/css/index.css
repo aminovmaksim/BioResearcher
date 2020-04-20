@@ -31,6 +31,7 @@ th, td {
 }
 
 .lds-dual-ring {
+    margin-left: 20px;
     width: 25px;
     height: 25px;
 }
@@ -46,18 +47,23 @@ th, td {
 }
 @keyframes lds-dual-ring {
     0% {
-        transform: rotate(0deg);
+        transform: rotate(0deg) scale(1);
+    }
+    50% {
+        transform: rotate(180deg)  scale(1.4);
     }
     100% {
-        transform: rotate(360deg);
+        transform: rotate(360deg) scale(1);
     }
 }
 
 .center_form {
     width: 100%;
-    display: inline-block;
-    top: 10px;
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
     position: relative;
+    align-items: center;
 }
 
 .analyze_btn_loading {
@@ -67,9 +73,7 @@ th, td {
 }
 
 .stab_result {
-    position: absolute;
-    margin: 12px;
-    margin-left: 10%;
+    margin: 15px;
 }
 
 .stab_image {
@@ -78,8 +82,14 @@ th, td {
     height: 30px;
 }
 
+.result_content{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
 .chart {
     border-radius: 20px;
-    height: 300px;
-    width: 100%;
+    height: 150px;
+    width: 90%;
 }
