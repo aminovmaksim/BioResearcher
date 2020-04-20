@@ -42,3 +42,18 @@ input[type=number] {
     border: 4px solid #d48bd9;
     border-radius: 30px;
 }
+
+.test_input {
+
+    font-family: Roboto, serif;
+    font-weight: bold;
+    font-size: 12px;
+
+    resize: vertical;
+    width: 95%;
+    box-sizing: border-box;
+    border: 2px solid #d48bd9;
+    border-radius: 20px;
+    horiz-align: center;
+    padding: 5px;
+}

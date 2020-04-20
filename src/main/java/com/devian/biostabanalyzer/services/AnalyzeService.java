@@ -10,8 +10,6 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -19,7 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.devian.biostabanalyzer.model.internal.Chart.*;
+import static com.devian.biostabanalyzer.model.internal.Chart.ChartData;
+import static com.devian.biostabanalyzer.model.internal.Chart.ChartDataset;
 
 @Service
 public class AnalyzeService {
@@ -28,6 +27,8 @@ public class AnalyzeService {
     Gson gson;
 
     public static final String URL = "https://bmafunctionscore.azurewebsites.net/api/";
+    public static final String URL_SIMULATE = URL + "Simulate";
+    public static final String URL_ANALYZE = URL + "Analyze";
 
     private final RestTemplate restTemplate;
 
@@ -36,16 +37,19 @@ public class AnalyzeService {
     }
 
     public AnalyzeResponse analyze(BioModel model) {
-        String url = URL + "Analyze";
         HttpEntity<BioModel> entity = new HttpEntity<>(model);
-
-        String response = this.restTemplate.postForObject(url, entity, String.class);
+        String response = this.restTemplate.postForObject(URL_ANALYZE, entity, String.class);
         System.out.println(response);
-
         return gson.fromJson(response, AnalyzeResponse.class);
     }
 
-    public Chart simulate(int steps, BioModel bioModel) {
+    public SimulateResponse simulate(SimulateRequest request) {
+        HttpEntity<SimulateRequest> entity = new HttpEntity<>(request);
+        String json = this.restTemplate.postForObject(URL_SIMULATE, entity, String.class);
+        return gson.fromJson(json, SimulateResponse.class);
+    }
+
+    public Chart simulateBySteps(int steps, BioModel bioModel) {
 
         List<Variable> req_vars = new ArrayList<>();
         for (BioModel.Variable variable : bioModel.getVariables()) {
@@ -57,28 +61,32 @@ public class AnalyzeService {
                 .variables(req_vars)
                 .build();
 
-        String url = URL + "Simulate";
-
         List<SimulateResponse> responses = new ArrayList<>();
         responses.add(SimulateResponse.builder().variables(request.getVariables()).build());
 
         for (int i = 0; i < steps; i++) {
-            HttpEntity<SimulateRequest> entity = new HttpEntity<>(request);
-            String json = this.restTemplate.postForObject(url, entity, String.class);
-            SimulateResponse response = gson.fromJson(json, SimulateResponse.class);
+            SimulateResponse response = simulate(request);
             responses.add(response);
             request.setVariables(response.getVariables());
         }
 
-        System.out.println(gson.toJson(responses));
+        return getSimulationChart(responses, bioModel);
+    }
+
+    public Chart getSimulationChart(List<SimulateResponse> responses, BioModel bioModel) {
+
+        if (responses == null) {
+            return null;
+        }
 
         List<Integer> labels = new ArrayList<>();
-        for (int i = 1; i <= steps; i++) {
+        for (int i = 1; i <= responses.size(); i++) {
             labels.add(i);
         }
 
         List<ChartDataset> datasets = new ArrayList<>();
         for (BioModel.Variable variable : bioModel.getVariables()) {
+
             List<Integer> data = new ArrayList<>();
             for (SimulateResponse response : responses) {
                 for (Variable var : response.getVariables()) {
@@ -87,6 +95,7 @@ public class AnalyzeService {
                     }
                 }
             }
+
             ChartDataset dataset = ChartDataset.builder()
                     .label(variable.getName())
                     .fill(false)

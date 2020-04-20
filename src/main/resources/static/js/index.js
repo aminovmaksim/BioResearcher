@@ -110,3 +110,49 @@ function simulate() {
 
     xhr.send();
 }
+
+function add_test() {
+    let table = document.getElementById("test_table");
+    let row = table.insertRow(-1);
+
+    let cell_name = row.insertCell(0);
+    let cell_test = row.insertCell(1);
+    let cell_result = row.insertCell(2);
+    let cell_delete = row.insertCell(3);
+
+    let btn_id = (table.rows.length - 1) + "@test_delete_btn";
+    let test_id = (table.rows.length - 1) + "@test_input";
+    let test_res_id = (table.rows.length - 1) + "@test_result";
+
+    cell_delete.innerHTML = get_close_btn(btn_id);
+    cell_name.innerHTML = `<div contenteditable='true'>Test ${table.rows.length - 1}</div>`;
+    cell_test.innerHTML = `<textarea id="${test_id}" class='test_input' onchange='update_test_table_height()'></textarea>`;
+    cell_result.innerHTML = `<div id="${test_res_id}"></div>`
+
+    update_test_table_height();
+}
+
+function delete_row(btn) {
+    let id = parseInt(btn.id.split('@')[0]);
+    let table = document.getElementById("test_table");
+
+    table.deleteRow(id);
+
+    for (let i = 1; i < table.rows.length; i ++) {
+        let id = i + "@test_row";
+        table.rows[i].cells[3].innerHTML = get_close_btn(id);
+    }
+}
+
+function update_test_table_indexes() {
+
+}
+
+function update_test_table_height() {
+    let content = document.getElementById("testing_lab_result");
+    content.style.maxHeight = content.scrollHeight + "px";
+}
+
+function get_close_btn(id) {
+    return `<input id='${id}' class='close_btn' type='image' onclick='delete_row(this)' src=\"https://img.icons8.com/cotton/2x/delete-sign--v1.png\"/>`
+}

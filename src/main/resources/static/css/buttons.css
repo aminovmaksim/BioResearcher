@@ -2,7 +2,7 @@
     background-color: #d48bd9;
     border: none;
     color: white;
-    height: 40px;
+    height: 35px;
     padding: 7px 30px;
     margin: 5px;
     text-align: center;
@@ -120,4 +120,44 @@ button:hover:disabled {background-color: #cbc2cc}
 
 .submit {
     margin-left: 10px;
+}
+
+.test_controls {
+    display: flex;
+    height: 50px;
+    margin-top: 7px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    align-items: center
+}
+
+.add_test_btn {
+    margin-top: 0;
+    margin-left: 0;
+    background-color: #a0abf2;
+}
+
+.add_test_btn:hover {
+    background-color: #6770ab;
+}
+
+.run_test_btn {
+    margin-top: 0;
+    background-color: #0cc44f;
+}
+
+.run_test_btn:hover {
+    background-color: #137d39;
+}
+
+.close_btn {
+    margin-right: 5px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.close_btn:hover {
+    filter: brightness(80%);
+    transition-duration: 0.4s;
 }

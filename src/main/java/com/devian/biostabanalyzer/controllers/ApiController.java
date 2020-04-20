@@ -1,11 +1,10 @@
 package com.devian.biostabanalyzer.controllers;
 
 import com.devian.biostabanalyzer.model.domain.BioModel;
-import com.devian.biostabanalyzer.model.domain.simulator.Variable;
 import com.devian.biostabanalyzer.model.internal.BlockVar;
-import com.devian.biostabanalyzer.model.internal.Chart;
-import com.devian.biostabanalyzer.model.network.SimulateRequest;
+import com.devian.biostabanalyzer.model.internal.ModelTestStr;
 import com.devian.biostabanalyzer.services.AnalyzeService;
+import com.devian.biostabanalyzer.services.TestService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.devian.biostabanalyzer.model.internal.Chart.*;
 
 @RestController
 public class ApiController {
+
+    @Autowired
+    TestService testService;
 
     @Autowired
     AnalyzeService analyzeService;
@@ -49,7 +48,19 @@ public class ApiController {
             }
         }
 
-        return gson.toJson(analyzeService.simulate(stepsCount, bioModel));
+        return gson.toJson(analyzeService.simulateBySteps(stepsCount, bioModel));
+    }
+
+    @GetMapping("/test")
+    public String test(
+            @CookieValue(value = "biomodel") String biomodel,
+            @RequestHeader(value = "tests") String tests
+    ) {
+        BioModel bioModel = gson.fromJson(biomodel, BioModel.class);
+        Type itemsListType = new TypeToken<List<ModelTestStr>>() {}.getType();
+        List<ModelTestStr> str_tests = gson.fromJson(tests, itemsListType);
+
+        return gson.toJson(testService.runTests(bioModel, str_tests));
     }
 
 }

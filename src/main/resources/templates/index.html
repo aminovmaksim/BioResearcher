@@ -67,6 +67,24 @@
     </div>
 </div>
 
+<div id="testing_lab" class="testing_lab">
+    <button type="button" class="collapsible testing_lab_btn">Testing lab</button>
+    <div id="testing_lab_result" class="result_content">
+        <div class="test_controls">
+            <button id="btn_add_test" class="common_button add_test_btn" onclick="add_test()">+ Add test</button>
+            <button id="btn_run_test" class="common_button run_test_btn">> Run tests</button>
+        </div>
+        <table id="test_table">
+            <tr>
+                <th style="width: 15%">Name</th>
+                <th style="width: 50%">Test</th>
+                <th style="width: 35%">Results</th>
+                <th style="width: 30px"></th>
+            </tr>
+        </table>
+    </div>
+</div>
+
 <div id="result_chart" class="result_chart">
     <button type="button" class="collapsible">Simulate result</button>
     <div class="result_content">
@@ -78,14 +96,6 @@
                 <button class="common_button" id="btn_simulate" type="submit" onclick="simulate()">Simulate</button>
         </div>
         <canvas id="chart" class="chart"></canvas>
-    </div>
-</div>
-
-
-<div id="testing_lab" class="testing_lab">
-    <button type="button" class="collapsible testing_lab_btn">Testing lab</button>
-    <div class="result_content">
-
     </div>
 </div>
 
