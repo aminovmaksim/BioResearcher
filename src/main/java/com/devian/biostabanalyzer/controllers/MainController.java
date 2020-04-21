@@ -50,7 +50,7 @@ public class MainController {
     @GetMapping("/block_var")
     public String blockVar(Model model,
                            @CookieValue(value = "biomodel") String biomodel,
-                           @RequestParam  (value = "vars") String json) {
+                           @RequestParam(value = "vars") String json) {
         biomodel = CookieService.getCookie(biomodel);
 
         json = URLDecoder.decode(json, StandardCharsets.UTF_8);

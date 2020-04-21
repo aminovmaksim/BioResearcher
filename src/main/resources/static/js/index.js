@@ -18,6 +18,10 @@ let chart = new Chart(document.getElementById("chart"), {
     type : "line"
 });
 
+let tests_global = [];
+
+get_tests_from_cookie();
+
 function unlock_analyze_button() {
     document.getElementById("block_var_button").disabled = false;
 }
@@ -64,7 +68,7 @@ function get_block_vars() {
 
 // creates an array of blocking values
 function analyze() {
-    document.getElementById("loading_wheel").style.display = "inline-block";
+    show_analyze_load(true);
     document.getElementById("block_var_data").value = get_block_vars();
 }
 
@@ -89,7 +93,7 @@ function check_steps() {
 
 function simulate() {
 
-    document.getElementById("loading_wheel").style.display = "inline-block";
+    show_simulate_load(true)
     let block_vars = get_block_vars();
     let steps = document.getElementById("input_steps").value;
 
@@ -99,7 +103,7 @@ function simulate() {
     xhr.setRequestHeader("steps", steps);
 
     xhr.onload = function () {
-        document.getElementById("loading_wheel").style.display = "none";
+        show_simulate_load(false)
         let data = JSON.parse(JSON.parse(xhr.response));
 
         let chart_el = document.getElementById('chart');
@@ -111,7 +115,7 @@ function simulate() {
     xhr.send();
 }
 
-function add_test() {
+function add_test(name, test_text) {
     let table = document.getElementById("test_table");
     let row = table.insertRow(-1);
 
@@ -121,13 +125,18 @@ function add_test() {
     let cell_delete = row.insertCell(3);
 
     let btn_id = (table.rows.length - 1) + "@test_delete_btn";
+    let test_name_id = (table.rows.length - 1) + "@test_name";
     let test_id = (table.rows.length - 1) + "@test_input";
     let test_res_id = (table.rows.length - 1) + "@test_result";
 
-    cell_delete.innerHTML = get_close_btn(btn_id);
-    cell_name.innerHTML = `<div contenteditable='true'>Test ${table.rows.length - 1}</div>`;
-    cell_test.innerHTML = `<textarea id="${test_id}" class='test_input' onchange='update_test_table_height()'></textarea>`;
-    cell_result.innerHTML = `<div id="${test_res_id}"></div>`
+    if (name === undefined) {
+        name = `Test ${table.rows.length - 1}`;
+    }
+
+    cell_name.innerHTML = `<div id="${test_name_id}" class="test_name" contenteditable='true'>${name}</div>`;
+    cell_test.innerHTML = `<textarea id="${test_id}" class='test_input' onblur="update_test_table_height()">${test_text}</textarea>`;
+    cell_result.innerHTML = `<div id="${test_res_id}" class="test_result"></div>`
+    cell_delete.innerHTML = `<input id='${btn_id}' class='close_btn' type='image' onclick='delete_row(this)' src=\"https://img.icons8.com/cotton/2x/delete-sign--v1.png\"/>`
 
     update_test_table_height();
 }
@@ -137,15 +146,23 @@ function delete_row(btn) {
     let table = document.getElementById("test_table");
 
     table.deleteRow(id);
+    update_test_table_indexes();
 
-    for (let i = 1; i < table.rows.length; i ++) {
-        let id = i + "@test_row";
-        table.rows[i].cells[3].innerHTML = get_close_btn(id);
-    }
+    tests_global = get_test_from_table();
 }
 
 function update_test_table_indexes() {
+    let table = document.getElementById("test_table");
 
+    for (let i = 1; i < table.rows.length; i ++) {
+
+        let curr_id = parseInt(table.rows[i].cells[0].innerHTML.match("\"\\w+@\\w+\"")[0].split('@')[0][1])
+
+        document.getElementById(curr_id + "@test_name").id = i + "@test_name";
+        document.getElementById(curr_id + "@test_input").id = i + "@test_input";
+        document.getElementById(curr_id + "@test_result").id = i + "@test_result";
+        document.getElementById(curr_id + "@test_delete_btn").id = i + "@test_delete_btn";
+    }
 }
 
 function update_test_table_height() {
@@ -153,6 +170,206 @@ function update_test_table_height() {
     content.style.maxHeight = content.scrollHeight + "px";
 }
 
-function get_close_btn(id) {
-    return `<input id='${id}' class='close_btn' type='image' onclick='delete_row(this)' src=\"https://img.icons8.com/cotton/2x/delete-sign--v1.png\"/>`
+function TestStr() {
+    this.id = 0;
+    this.name = "";
+    this.test = "";
+}
+
+function run_test() {
+
+    show_test_load(true)
+    clear_test_results();
+
+    let str_test = get_test_from_table();
+
+    save_tests_to_cookie(str_test);
+
+    for (let i = 0; i < str_test.length; i++) {
+        let test = str_test[i];
+
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', '/test', true);
+        xhr.setRequestHeader("test", JSON.stringify(test));
+
+        xhr.onload = function () {
+            let test_response = JSON.parse(JSON.parse(xhr.response));
+
+            console.log(test_response);
+
+            let table_result = document.getElementById(test_response.id + "@test_result");
+
+            if (test_response['syntaxError'] !== undefined) {
+                table_result.innerText = test_response['syntaxError'];
+                table_result.style.color = "#fc003f";
+            } else {
+                if (test_response['testSuccess'] === true) {
+                    table_result.innerText = "Success";
+                    table_result.style.color = "#37cf19";
+                } else {
+                    table_result.innerText = "Failed";
+                    table_result.style.color = "#fc003f";
+                }
+            }
+
+            if (test_response.id === str_test.length) {
+                show_test_load(false);
+            }
+        }
+
+        xhr.send();
+    }
+}
+
+function get_test_from_table() {
+    let table = document.getElementById("test_table");
+    let str_tests = [];
+
+    for (let i = 1; i < table.rows.length; i ++) {
+        let test_str = new TestStr();
+        test_str.id = i;
+        test_str.name = document.getElementById(i + "@test_name").innerHTML;
+        test_str.test = document.getElementById(i + "@test_input").value;
+        str_tests.push(test_str);
+    }
+
+    tests_global = str_tests;
+
+    return str_tests;
+}
+
+function save_tests_to_cookie(tests) {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '/save_tests', true);
+    xhr.setRequestHeader("new_tests", JSON.stringify(tests));
+    xhr.send();
+
+    tests_global = tests
+}
+
+function get_tests_from_cookie() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '/get_saved_tests', true);
+
+    xhr.onload = function () {
+        let tests = JSON.parse(JSON.parse(xhr.response));
+        clear_tests();
+
+        let table = document.getElementById("test_table");
+        for (let i = 0; i < tests.length; i++) {
+            add_test();
+            let test = tests[i];
+            document.getElementById((i+1) + "@test_name").innerHTML = test["name"];
+            document.getElementById((i+1) + "@test_input").innerHTML = test["test"];
+        }
+
+        update_test_table_height();
+        close_test_lab(true);
+
+        tests_global = tests;
+    }
+
+    xhr.send();
+}
+
+function clear_tests() {
+    let table = document.getElementById("test_table");
+    for (let i = 1; i < table.rows.length; i ++) {
+        table.deleteRow(i);
+    }
+    tests_global = [];
+}
+
+function clear_test_results() {
+    let table = document.getElementById("test_table");
+
+    for (let i = 1; i < table.rows.length; i ++) {
+        let res = document.getElementById(i + "@test_result");
+        res.innerText = "";
+        res.style.color = "black";
+    }
+}
+
+function close_test_lab(cond) {
+    let btn = document.getElementById("btn_test_lab");
+    open_collapsable(true, btn);
+}
+
+function close_simulation(cond) {
+    let btn = document.getElementById("btn_simulate_collapse");
+    open_collapsable(true, btn);
+}
+
+function open_collapsable(cond, btn) {
+    if (cond) {
+        btn.classList.toggle("after");
+    } else {
+        btn.classList.toggle("active");
+    }
+    let content = btn.nextElementSibling;
+    if (content.style.maxHeight) {
+        content.style.maxHeight = null;
+    } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+    }
+}
+
+
+function show_analyze_load(cond) {
+    show_load(cond, document.getElementById("load_analyze"));
+}
+
+function show_test_load(cond) {
+    show_load(cond, document.getElementById("load_test"));
+}
+
+function show_simulate_load(cond) {
+    show_load(cond, document.getElementById("load_simulate"));
+}
+
+function show_load(cond, load) {
+    if (cond) {
+        load.style.display = "inline-block";
+    } else {
+        load.style.display = "none";
+    }
+}
+
+function upload_file() {
+    let input = document.createElement('input');
+    input.type = 'file';
+    input.onchange = e => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        reader.readAsText(file,'UTF-8');
+
+        reader.onload = readerEvent => {
+            let content = readerEvent.target.result; // this is the content!
+            show_tests(JSON.parse(content));
+        }
+
+    }
+
+    input.click();
+}
+
+function show_tests(tests) {
+    console.log(tests);
+    for (let i = 0; i < tests.length; i ++) {
+        add_test(tests[i].name, tests[i].test);
+    }
+
+    tests_global = tests;
+}
+
+function download_tests() {
+    console.log(tests_global);
+
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tests_global));
+    let downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("download", "tests.json");
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
 }

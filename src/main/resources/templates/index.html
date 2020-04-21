@@ -43,11 +43,14 @@
         <td th:text="${variable.rangeTo}"></td>
         <td>
             <label class="container">
-                <input type="checkbox" class="checkbox" th:checked="${variable.blocked}" th:id="${variable.id} + '@block_cb'" onclick="checkbox(this)">
+                <input type="checkbox" class="checkbox" th:checked="${variable.blocked}"
+                       th:id="${variable.id} + '@block_cb'" onclick="checkbox(this)">
                 <span class="checkmark"></span>
             </label>
         </td>
-        <td><input class="value_input" type="number" th:disabled="${!variable.blocked}" th:id="${variable.id} + '@block_value'" th:value="${variable.value}" onchange="unlock_analyze_button()" style="width: 100px"></td>
+        <td><input class="value_input" type="number" th:disabled="${!variable.blocked}"
+                   th:id="${variable.id} + '@block_value'" th:value="${variable.value}"
+                   onchange="unlock_analyze_button()" style="width: 100px"></td>
     </tr>
 </table>
 
@@ -55,24 +58,32 @@
     <div class="analyze_btn_div">
         <form id="block_var_form" action="/block_var" method="get">
             <input name="vars" type="text" id="block_var_data" hidden="hidden" value="">
-            <button class="common_button" disabled id="block_var_button" type="submit" onclick="analyze()">Analyze</button>
+            <button class="common_button" disabled id="block_var_button" type="submit" onclick="analyze()">Analyze
+            </button>
         </form>
     </div>
     <div class="stab_result" th:if="${stab != null}">
-        <img class="stab_image" th:src="${stab == 'Stabilizing'} ? 'https://biomodelanalyzer.org/images/analysis/BMA_Stable_Icon.svg' : 'https://biomodelanalyzer.org/images/analysis/BMA_Unstable_Icon.svg'" alt="">
+        <img class="stab_image"
+             th:src="${stab == 'Stabilizing'} ? 'https://biomodelanalyzer.org/images/analysis/BMA_Stable_Icon.svg' : 'https://biomodelanalyzer.org/images/analysis/BMA_Unstable_Icon.svg'"
+             alt="">
         <span class="stab_text" th:text="${stab}"></span>
     </div>
-    <div id="loading_wheel" class="analyze_btn_loading">
+    <div id="load_analyze" class="analyze_btn_loading">
         <div class="lds-dual-ring"></div>
     </div>
 </div>
 
 <div id="testing_lab" class="testing_lab">
-    <button type="button" class="collapsible testing_lab_btn">Testing lab</button>
+    <button type="button" id="btn_test_lab" class="collapsible testing_lab_btn">Testing lab</button>
     <div id="testing_lab_result" class="result_content">
         <div class="test_controls">
             <button id="btn_add_test" class="common_button add_test_btn" onclick="add_test()">+ Add test</button>
-            <button id="btn_run_test" class="common_button run_test_btn">> Run tests</button>
+            <button id="btn_run_test" class="common_button run_test_btn" onclick="run_test()">> Run tests</button>
+            <button id="btn_upload_tests" class="common_button btn_upload_tests" onclick="upload_file()">Upload</button>
+            <button id="btn_download_tests" class="common_button btn_download_tests" onclick="download_tests()">Download</button>
+            <div id="load_test" class="analyze_btn_loading">
+                <div class="lds-dual-ring"></div>
+            </div>
         </div>
         <table id="test_table">
             <tr>
@@ -86,14 +97,17 @@
 </div>
 
 <div id="result_chart" class="result_chart">
-    <button type="button" class="collapsible">Simulate result</button>
+    <button type="button" id="btn_simulate_collapse" class="collapsible">Simulate result</button>
     <div class="result_content">
         <div class="simulation_controls">
-                <div class="simulation_text">Input number of simulation steps: </div>
-                <button id="btn_steps_less" class="round_btn" onclick="less_steps()">-</button>
-                <input id="input_steps" class="simulation_input" type="number" value="10" onchange="check_steps()">
-                <button id="btn_steps_more" class="round_btn" onclick="more_steps()">+</button>
-                <button class="common_button" id="btn_simulate" type="submit" onclick="simulate()">Simulate</button>
+            <div class="simulation_text">Steps:</div>
+            <button id="btn_steps_less" class="round_btn" onclick="less_steps()">-</button>
+            <input id="input_steps" class="simulation_input" type="number" value="10" onchange="check_steps()">
+            <button id="btn_steps_more" class="round_btn" onclick="more_steps()">+</button>
+            <button class="common_button" id="btn_simulate" type="submit" onclick="simulate()">Simulate</button>
+            <div id="load_simulate" class="analyze_btn_loading">
+                <div class="lds-dual-ring"></div>
+            </div>
         </div>
         <canvas id="chart" class="chart"></canvas>
     </div>

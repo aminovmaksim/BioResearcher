@@ -5,10 +5,11 @@ import lombok.Data;
 @Data
 public class ModelTest {
 
+    private int id;
     private String name;
     private Condition condition;
     private Action action;
-    private boolean expectStab;
+    private Boolean expectStab;
 
     private String syntaxError;
 

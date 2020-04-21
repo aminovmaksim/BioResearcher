@@ -161,3 +161,21 @@ button:hover:disabled {background-color: #cbc2cc}
     filter: brightness(80%);
     transition-duration: 0.4s;
 }
+
+.btn_upload_tests {
+    margin-top: 0;
+    background-color: #aab5b5;
+}
+
+.btn_upload_tests:hover {
+    background-color: #858f8f;
+}
+
+.btn_download_tests {
+    margin-top: 0;
+    background-color: #aab5b5;
+}
+
+.btn_download_tests:hover {
+    background-color: #858f8f;
+}

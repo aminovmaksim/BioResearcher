@@ -51,9 +51,17 @@ input[type=number] {
 
     resize: vertical;
     width: 95%;
+    height: 30px;
     box-sizing: border-box;
     border: 2px solid #d48bd9;
     border-radius: 20px;
     horiz-align: center;
     padding: 5px;
+
+    text-align: center;
+    vertical-align: middle;
+}
+
+.test_name {
+    color: #d48bd9;
 }

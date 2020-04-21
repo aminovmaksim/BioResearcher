@@ -25,6 +25,24 @@ public class TestService {
     @Autowired
     AnalyzeService analyzeService;
 
+    public TestResponse runTest(BioModel bioModel, ModelTestStr str_test) {
+
+        ModelTest modelTest = getTestObject(str_test, bioModel);
+
+        TestResponse testResponse = new TestResponse();
+        testResponse.setName(modelTest.getName());
+        testResponse.setId(modelTest.getId());
+
+        if (modelTest.getSyntaxError() != null) {
+            testResponse.setSyntaxError(modelTest.getSyntaxError());
+            testResponse.setTestSuccess(false);
+        } else {
+            testResponse = runTest(modelTest, bioModel);
+        }
+
+        return testResponse;
+    }
+
     public List<TestResponse> runTests(BioModel bioModel, List<ModelTestStr> str_tests) {
 
         List<ModelTest> tests = new ArrayList<>();
@@ -38,6 +56,7 @@ public class TestService {
         for (ModelTest modelTest : tests) {
             TestResponse testResponse = new TestResponse();
             testResponse.setName(modelTest.getName());
+            testResponse.setId(modelTest.getId());
             if (modelTest.getSyntaxError() != null) {
                 testResponse.setSyntaxError(modelTest.getSyntaxError());
                 testResponse.setTestSuccess(false);
@@ -54,6 +73,7 @@ public class TestService {
 
         ModelTest modelTest = new ModelTest();
         modelTest.setName(str_test.getName());
+        modelTest.setId(str_test.getId());
 
         String[] str = str_test.getTest().split(" ");
 
@@ -75,7 +95,7 @@ public class TestService {
                                 try {
                                     value = Integer.parseInt(str[i + 3]);
                                 } catch (NumberFormatException e) {
-                                    modelTest.setSyntaxError("Expected INTEGER variable value at word " + i + 3);
+                                    modelTest.setSyntaxError("Expected INTEGER variable value at symbol " + getSymbolByWord(i+3,str));
                                     return modelTest;
                                 }
                                 Condition condition = new Condition();
@@ -85,15 +105,15 @@ public class TestService {
                                 modelTest.setCondition(condition);
                                 i = i + 4;
                             } else {
-                                modelTest.setSyntaxError("Expected variable value at word " + i + 3);
+                                modelTest.setSyntaxError("Expected variable value at symbol " + getSymbolByWord(i+3,str));
                                 return modelTest;
                             }
                         } else {
-                            modelTest.setSyntaxError("Expected '==' or '<' or '>' at word " + i + 2);
+                            modelTest.setSyntaxError("Expected '==' or '<' or '>' at symbol " + getSymbolByWord(i+2,str));
                             return modelTest;
                         }
                     } else {
-                        modelTest.setSyntaxError("Expected variable name at word " + i + 1);
+                        modelTest.setSyntaxError("Expected variable name at symbol " + getSymbolByWord(i+1,str));
                         return modelTest;
                     }
                     break;
@@ -112,7 +132,7 @@ public class TestService {
                                         try {
                                             value = Integer.parseInt(str[i + 3]);
                                         } catch (NumberFormatException e) {
-                                            modelTest.setSyntaxError("Expected INTEGER variable value at word " + i + 3);
+                                            modelTest.setSyntaxError("Expected INTEGER variable value at symbol " + getSymbolByWord(i+3,str));
                                             return modelTest;
                                         }
                                         Action action = new Action();
@@ -122,11 +142,11 @@ public class TestService {
                                         modelTest.setAction(action);
                                         i = i + 4;
                                     } else {
-                                        modelTest.setSyntaxError("Expected variable value at word " + i + 3);
+                                        modelTest.setSyntaxError("Expected variable value at symbol " + getSymbolByWord(i+3,str));
                                         return modelTest;
                                     }
                                 } else {
-                                    modelTest.setSyntaxError("Expected variable name at word " + i + 2);
+                                    modelTest.setSyntaxError("Expected variable name at symbol " + getSymbolByWord(i+2,str));
                                     return modelTest;
                                 }
                                 break;
@@ -143,16 +163,16 @@ public class TestService {
                                     modelTest.setAction(action);
                                     i = i + 3;
                                 } else {
-                                    modelTest.setSyntaxError("Expected variable name at word " + i + 2);
+                                    modelTest.setSyntaxError("Expected variable name at symbol " + getSymbolByWord(i+2,str));
                                     return modelTest;
                                 }
                                 break;
                             default:
-                                modelTest.setSyntaxError("Expected action 'set' or 'block' at word " + i + 1);
+                                modelTest.setSyntaxError("Expected action 'set' or 'block' at symbol " + getSymbolByWord(i+1,str));
                                 return modelTest;
                         }
                     } else {
-                        modelTest.setSyntaxError("Expected action 'set' or 'block' at word " + i + 1);
+                        modelTest.setSyntaxError("Expected action 'set' or 'block' at symbol " + getSymbolByWord(i+1,str));
                         return modelTest;
                     }
                     break;
@@ -165,15 +185,19 @@ public class TestService {
                             modelTest.setExpectStab(false);
                             i = i + 2;
                         } else {
-                            modelTest.setSyntaxError("Expected 'stab' or 'unstab' at word " + i+1);
+                            modelTest.setSyntaxError("Expected 'stab' or 'unstab' at symbol " + getSymbolByWord(i+1,str) );
                             return modelTest;
                         }
                     }
                     break;
                 default:
-                    modelTest.setSyntaxError("Expected 'when' or 'then' or 'expect' at word " + i);
+                    modelTest.setSyntaxError("Expected 'when' or 'then' or 'expect' at symbol " + getSymbolByWord(i,str));
                     return modelTest;
             }
+        }
+
+        if (modelTest.getExpectStab() == null && modelTest.getAction().getType().equals(Action.TYPE_BLOCK)) {
+            modelTest.setSyntaxError("Missing 'expect' statement");
         }
 
         return modelTest;
@@ -192,6 +216,7 @@ public class TestService {
 
         TestResponse testResponse = new TestResponse();
         testResponse.setName(test.getName());
+        testResponse.setId(test.getId());
 
         List<Variable> req_vars = new ArrayList<>();
 
@@ -205,7 +230,7 @@ public class TestService {
                 boolean ready = processTest(req_vars, model, test);
                 if (ready) {
                     boolean result = analyzeService.analyze(model).isStabilizing();
-                    testResponse.setTestSuccess(result == test.isExpectStab());
+                    testResponse.setTestSuccess(result == test.getExpectStab());
                     return testResponse;
                 }
                 SimulateRequest simulateRequest = SimulateRequest.builder()
@@ -343,5 +368,13 @@ public class TestService {
 
     private int getVariableIndex(String name, BioModel model) {
         return getVariableIndex(getIdByName(name, model), model);
+    }
+
+    private int getSymbolByWord(int word, String[] words) {
+        int res = 0;
+        for (int i = 0; i < word; i++) {
+            res += words[i].length();
+        }
+        return res;
     }
 }

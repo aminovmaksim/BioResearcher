@@ -5,7 +5,8 @@ import lombok.Data;
 @Data
 public class TestResponse {
 
+    private Integer id;
     private String name;
     private String syntaxError;
-    private boolean testSuccess;
+    private Boolean testSuccess;
 }
