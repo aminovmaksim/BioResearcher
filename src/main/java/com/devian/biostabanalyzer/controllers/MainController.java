@@ -10,12 +10,13 @@ import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Type;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -41,7 +42,6 @@ public class MainController {
         } else {
 
         }
-        System.out.println(json);
         BioModel bioModel = gson.fromJson(json, BioModel.class);
         model.addAttribute("vars", bioModel.getVariables());
         return "index";
@@ -51,10 +51,7 @@ public class MainController {
     public String blockVar(Model model,
                            @CookieValue(value = "biomodel") String biomodel,
                            @RequestParam(value = "vars") String json) {
-        biomodel = CookieService.getCookie(biomodel);
-
-        json = URLDecoder.decode(json, StandardCharsets.UTF_8);
-        System.out.println(json);
+        json = CookieService.getCookie(json);
 
         Type itemsListType = new TypeToken<List<BlockVar>>() {}.getType();
         List<BlockVar> blockVars = gson.fromJson(json, itemsListType);
@@ -70,11 +67,11 @@ public class MainController {
                 }
             }
         }
+
         AnalyzeResponse analyzeResponse = analyzeService.analyze(analyzeRequest);
         if (analyzeResponse.getStatus().equals("Error")) {
             analyzeResponse.setStatus("Failed to prove stability");
         }
-        System.out.println(gson.toJson(bioModel));
 
         model.addAttribute("block_vars", blockVars);
         model.addAttribute("stab", analyzeResponse.getStatus());

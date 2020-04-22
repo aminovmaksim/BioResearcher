@@ -39,7 +39,6 @@ public class AnalyzeService {
     public AnalyzeResponse analyze(BioModel model) {
         HttpEntity<BioModel> entity = new HttpEntity<>(model);
         String response = this.restTemplate.postForObject(URL_ANALYZE, entity, String.class);
-        System.out.println(response);
         return gson.fromJson(response, AnalyzeResponse.class);
     }
 

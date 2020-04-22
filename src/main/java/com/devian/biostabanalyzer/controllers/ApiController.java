@@ -72,9 +72,6 @@ public class ApiController {
             @CookieValue(value = "biomodel") String biomodel,
             @RequestHeader(value = "test") String test
     ) {
-
-        System.out.println(test);
-
         BioModel bioModel = gson.fromJson(biomodel, BioModel.class);
         ModelTestStr str_test = gson.fromJson(test, ModelTestStr.class);
 

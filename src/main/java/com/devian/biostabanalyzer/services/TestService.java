@@ -5,6 +5,7 @@ import com.devian.biostabanalyzer.model.domain.simulator.Variable;
 import com.devian.biostabanalyzer.model.internal.ModelTest;
 import com.devian.biostabanalyzer.model.internal.ModelTestStr;
 import com.devian.biostabanalyzer.model.internal.TestResponse;
+import com.devian.biostabanalyzer.model.network.AnalyzeResponse;
 import com.devian.biostabanalyzer.model.network.SimulateRequest;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -229,8 +230,8 @@ public class TestService {
             for (int i = 0; i < 100; i++) {
                 boolean ready = processTest(req_vars, model, test);
                 if (ready) {
-                    boolean result = analyzeService.analyze(model).isStabilizing();
-                    testResponse.setTestSuccess(result == test.getExpectStab());
+                    AnalyzeResponse result = analyzeService.analyze(model);
+                    testResponse.setTestSuccess(result.isStabilizing() == test.getExpectStab());
                     return testResponse;
                 }
                 SimulateRequest simulateRequest = SimulateRequest.builder()
