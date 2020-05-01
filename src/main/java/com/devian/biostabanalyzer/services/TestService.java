@@ -2,15 +2,19 @@ package com.devian.biostabanalyzer.services;
 
 import com.devian.biostabanalyzer.model.domain.BioModel;
 import com.devian.biostabanalyzer.model.domain.simulator.Variable;
-import com.devian.biostabanalyzer.model.internal.ModelTest;
-import com.devian.biostabanalyzer.model.internal.ModelTestStr;
-import com.devian.biostabanalyzer.model.internal.TestResponse;
+import com.devian.biostabanalyzer.model.internal.*;
 import com.devian.biostabanalyzer.model.network.AnalyzeResponse;
 import com.devian.biostabanalyzer.model.network.SimulateRequest;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +24,17 @@ import static com.devian.biostabanalyzer.model.internal.ModelTest.Condition;
 @Service
 public class TestService {
 
-    @Autowired
-    Gson gson;
+    public static final String TEST_URL = "http://localhost:7071/api/HttpStartTests";
 
-    @Autowired
-    AnalyzeService analyzeService;
+    private final Gson gson;
+    private final AnalyzeService analyzeService;
+    private final RestTemplate restTemplate;
+
+    public TestService(RestTemplateBuilder restTemplateBuilder, AnalyzeService analyzeService, Gson gson) {
+        this.restTemplate = restTemplateBuilder.build();
+        this.analyzeService = analyzeService;
+        this.gson = gson;
+    }
 
     public TestResponse runTest(BioModel bioModel, ModelTestStr str_test) {
 
@@ -47,27 +57,57 @@ public class TestService {
     public List<TestResponse> runTests(BioModel bioModel, List<ModelTestStr> str_tests) {
 
         List<ModelTest> tests = new ArrayList<>();
-        List<TestResponse> responses = new ArrayList<>();
 
         for (ModelTestStr str_test : str_tests) {
             ModelTest modelTest = getTestObject(str_test, bioModel);
             tests.add(modelTest);
         }
 
-        for (ModelTest modelTest : tests) {
-            TestResponse testResponse = new TestResponse();
-            testResponse.setName(modelTest.getName());
-            testResponse.setId(modelTest.getId());
-            if (modelTest.getSyntaxError() != null) {
-                testResponse.setSyntaxError(modelTest.getSyntaxError());
-                testResponse.setTestSuccess(false);
-                responses.add(testResponse);
-            } else {
-                responses.add(runTest(modelTest, bioModel));
+        TestRequest testRequest = new TestRequest();
+        testRequest.setModel(bioModel);
+        testRequest.setTests(tests);
+
+        HttpEntity<TestRequest> entity = new HttpEntity<>(testRequest);
+        ResponseEntity<TestStartResponse> testStartResponse = restTemplate.postForEntity(TEST_URL, entity, TestStartResponse.class);
+
+        if (testStartResponse.getBody() == null) {
+            return null;
+        }
+
+        String RESULT_URL = testStartResponse.getBody().getStatusQueryGetUri();
+
+        while (true) {
+            ResponseEntity<TestResultsResponse> testResponse = restTemplate.getForEntity(RESULT_URL, TestResultsResponse.class);
+            if (testResponse.getBody() == null) {
+                return null;
+            }
+            TestResultsResponse testResultsResponse = testResponse.getBody();
+            if (testResultsResponse.getOutput() != null) {
+                Type itemsListType = new TypeToken<List<TestResponse>>() {}.getType();
+                return gson.fromJson(testResultsResponse.getOutput(), itemsListType);
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
 
-        return responses;
+//
+//        for (ModelTest modelTest : tests) {
+//            TestResponse testResponse = new TestResponse();
+//            testResponse.setName(modelTest.getName());
+//            testResponse.setId(modelTest.getId());
+//            if (modelTest.getSyntaxError() != null) {
+//                testResponse.setSyntaxError(modelTest.getSyntaxError());
+//                testResponse.setTestSuccess(false);
+//                responses.add(testResponse);
+//            } else {
+//                responses.add(runTest(modelTest, bioModel));
+//            }
+//        }
+//
+//        return responses;
     }
 
     public ModelTest getTestObject(ModelTestStr str_test, BioModel bioModel) {

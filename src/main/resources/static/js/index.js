@@ -15,7 +15,7 @@ for (let i = 0; i < coll.length; i++) {
 let chart_el = document.getElementById('chart');
 let ctx = chart_el.getContext('2d');
 let chart = new Chart(document.getElementById("chart"), {
-    type : "line"
+    type: "line"
 });
 
 let tests_global = [];
@@ -154,7 +154,7 @@ function delete_row(btn) {
 function update_test_table_indexes() {
     let table = document.getElementById("test_table");
 
-    for (let i = 1; i < table.rows.length; i ++) {
+    for (let i = 1; i < table.rows.length; i++) {
 
         let curr_id = parseInt(table.rows[i].cells[0].innerHTML.match("\"\\w+@\\w+\"")[0].split('@')[0][1])
 
@@ -181,29 +181,31 @@ function run_test() {
     show_test_load(true)
     clear_test_results();
 
-    let str_test = get_test_from_table();
+    let str_tests = get_test_from_table();
 
-    save_tests_to_cookie(str_test);
+    save_tests_to_cookie(str_tests);
 
-    for (let i = 0; i < str_test.length; i++) {
-        let test = str_test[i];
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '/test_all', true);
+    xhr.setRequestHeader("tests", JSON.stringify(str_tests));
 
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', '/test', true);
-        xhr.setRequestHeader("test", JSON.stringify(test));
+    console.log(JSON.stringify(str_tests))
 
-        xhr.onload = function () {
-            let test_response = JSON.parse(JSON.parse(xhr.response));
+    xhr.onload = function () {
+        let tests_response = JSON.parse(JSON.parse(xhr.response));
+        console.log(tests_response);
 
-            console.log(test_response);
+        for (let i = 0; i < tests_response.length; i++) {
 
-            let table_result = document.getElementById(test_response.id + "@test_result");
+            let test_response = tests_response[i];
 
-            if (test_response['syntaxError'] !== undefined) {
-                table_result.innerText = test_response['syntaxError'];
+            let table_result = document.getElementById(test_response.Id + "@test_result");
+
+            if (test_response['SyntaxError'] !== undefined) {
+                table_result.innerText = test_response['SyntaxError'];
                 table_result.style.color = "#fc003f";
             } else {
-                if (test_response['testSuccess'] === true) {
+                if (test_response['TestSuccess'] === true) {
                     table_result.innerText = "Success";
                     table_result.style.color = "#37cf19";
                 } else {
@@ -212,20 +214,55 @@ function run_test() {
                 }
             }
 
-            if (test_response.id === str_test.length) {
-                show_test_load(false);
-            }
         }
 
-        xhr.send();
+        show_test_load(false);
+
     }
+
+    xhr.send();
+
+    // for (let i = 0; i < str_tests.length; i++) {
+    //     let test = str_tests[i];
+    //
+    //     let xhr = new XMLHttpRequest();
+    //     xhr.open('GET', '/test', true);
+    //     xhr.setRequestHeader("test", JSON.stringify(test));
+    //
+    //     xhr.onload = function () {
+    //         let test_response = JSON.parse(JSON.parse(xhr.response));
+    //
+    //         console.log(test_response);
+    //
+    //         let table_result = document.getElementById(test_response.id + "@test_result");
+    //
+    //         if (test_response['syntaxError'] !== undefined) {
+    //             table_result.innerText = test_response['syntaxError'];
+    //             table_result.style.color = "#fc003f";
+    //         } else {
+    //             if (test_response['testSuccess'] === true) {
+    //                 table_result.innerText = "Success";
+    //                 table_result.style.color = "#37cf19";
+    //             } else {
+    //                 table_result.innerText = "Failed";
+    //                 table_result.style.color = "#fc003f";
+    //             }
+    //         }
+    //
+    //         if (test_response.id === str_tests.length) {
+    //             show_test_load(false);
+    //         }
+    //     }
+    //
+    //     xhr.send();
+    // }
 }
 
 function get_test_from_table() {
     let table = document.getElementById("test_table");
     let str_tests = [];
 
-    for (let i = 1; i < table.rows.length; i ++) {
+    for (let i = 1; i < table.rows.length; i++) {
         let test_str = new TestStr();
         test_str.id = i;
         test_str.name = document.getElementById(i + "@test_name").innerHTML;
@@ -259,8 +296,8 @@ function get_tests_from_cookie() {
         for (let i = 0; i < tests.length; i++) {
             add_test();
             let test = tests[i];
-            document.getElementById((i+1) + "@test_name").innerHTML = test["name"];
-            document.getElementById((i+1) + "@test_input").innerHTML = test["test"];
+            document.getElementById((i + 1) + "@test_name").innerHTML = test["name"];
+            document.getElementById((i + 1) + "@test_input").innerHTML = test["test"];
         }
 
         update_test_table_height();
@@ -274,7 +311,7 @@ function get_tests_from_cookie() {
 
 function clear_tests() {
     let table = document.getElementById("test_table");
-    for (let i = 1; i < table.rows.length; i ++) {
+    for (let i = 1; i < table.rows.length; i++) {
         table.deleteRow(i);
     }
     tests_global = [];
@@ -283,7 +320,7 @@ function clear_tests() {
 function clear_test_results() {
     let table = document.getElementById("test_table");
 
-    for (let i = 1; i < table.rows.length; i ++) {
+    for (let i = 1; i < table.rows.length; i++) {
         let res = document.getElementById(i + "@test_result");
         res.innerText = "";
         res.style.color = "black";
@@ -341,7 +378,7 @@ function upload_file() {
     input.onchange = e => {
         let file = e.target.files[0];
         let reader = new FileReader();
-        reader.readAsText(file,'UTF-8');
+        reader.readAsText(file, 'UTF-8');
 
         reader.onload = readerEvent => {
             let content = readerEvent.target.result; // this is the content!
@@ -349,13 +386,12 @@ function upload_file() {
         }
 
     }
-
     input.click();
 }
 
 function show_tests(tests) {
     console.log(tests);
-    for (let i = 0; i < tests.length; i ++) {
+    for (let i = 0; i < tests.length; i++) {
         add_test(tests[i].name, tests[i].test);
     }
 
@@ -367,9 +403,37 @@ function download_tests() {
 
     let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tests_global));
     let downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
+    downloadAnchorNode.setAttribute("href", dataStr);
     downloadAnchorNode.setAttribute("download", "tests.json");
     document.body.appendChild(downloadAnchorNode); // required for firefox
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
+}
+
+function new_model() {
+    let input = document.createElement('input_new_model');
+    input.type = 'file';
+    input.onchange = e => {
+        let file = e.target.files[0];
+        let reader = new FileReader();
+        reader.readAsText(file, 'UTF-8');
+
+        reader.onload = readerEvent => {
+            let content = readerEvent.target.result; // this is the content!
+
+            let form = document.createElement("form_newmodel");
+            let element1 = document.createElement("input_newmodel");
+
+            form.method = "POST";
+            form.action = "/";
+
+            element1.value = content;
+            element1.name = "json";
+            form.appendChild(element1);
+            document.body.appendChild(form);
+            form.submit();
+        }
+
+    }
+    input.click();
 }

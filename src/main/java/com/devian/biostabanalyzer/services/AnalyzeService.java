@@ -23,17 +23,16 @@ import static com.devian.biostabanalyzer.model.internal.Chart.ChartDataset;
 @Service
 public class AnalyzeService {
 
-    @Autowired
-    Gson gson;
-
     public static final String URL = "https://bmafunctionscore.azurewebsites.net/api/";
     public static final String URL_SIMULATE = URL + "Simulate";
     public static final String URL_ANALYZE = URL + "Analyze";
 
+    private final Gson gson;
     private final RestTemplate restTemplate;
 
-    public AnalyzeService(RestTemplateBuilder restTemplateBuilder) {
+    public AnalyzeService(RestTemplateBuilder restTemplateBuilder, Gson gson) {
         this.restTemplate = restTemplateBuilder.build();
+        this.gson = gson;
     }
 
     public AnalyzeResponse analyze(BioModel model) {

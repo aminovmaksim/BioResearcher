@@ -72,6 +72,9 @@ public class MainController {
         if (analyzeResponse.getStatus().equals("Error")) {
             analyzeResponse.setStatus("Failed to prove stability");
         }
+        if (analyzeResponse.getStatus().equals("NotStabilizing")) {
+            analyzeResponse.setStatus("Not stabilizing");
+        }
 
         model.addAttribute("block_vars", blockVars);
         model.addAttribute("stab", analyzeResponse.getStatus());
