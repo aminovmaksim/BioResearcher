@@ -63,9 +63,16 @@ public class AnalyzeService {
         responses.add(SimulateResponse.builder().variables(request.getVariables()).build());
 
         for (int i = 0; i < steps; i++) {
+
+            System.out.println(gson.toJson(request));
+
             SimulateResponse response = simulate(request);
             responses.add(response);
             request.setVariables(response.getVariables());
+
+            if (response.getVariables() == null) {
+                return null;
+            }
         }
 
         return getSimulationChart(responses, bioModel);
@@ -121,6 +128,14 @@ public class AnalyzeService {
         Random obj = new Random();
         int rand_num = obj.nextInt(0xffffff + 1);
         return String.format("#%06x", rand_num);
+    }
+
+    public static void processFormulas(BioModel model) {
+        for(BioModel.Variable variable : model.getVariables()) {
+            for(BioModel.Variable var : model.getVariables()) {
+                variable.setFormula(variable.getFormula().replaceAll(var.getName(), String.valueOf(var.getId())));
+            }
+        }
     }
 
 }

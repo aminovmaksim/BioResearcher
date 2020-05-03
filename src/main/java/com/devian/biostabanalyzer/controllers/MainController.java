@@ -31,11 +31,13 @@ public class MainController {
 
     @RequestMapping("/")
     public String main(Model model,
-                       @RequestParam(required = false) String json,
-                       @CookieValue(value = "biomodel") String model_from_cookie,
+                       @RequestParam(value = "model_json", required = false) String json,
+                       @CookieValue(value = "biomodel", required = false) String model_from_cookie,
                        HttpServletResponse response) {
         if (json != null) {
-            CookieService.setCookie("biomodel", gson.toJson(gson.fromJson(json, BioModel.class)), response);
+            BioModel bioModel = gson.fromJson(json, BioModel.class);
+            AnalyzeService.processFormulas(bioModel);
+            CookieService.setCookie("biomodel", gson.toJson(bioModel), response);
             return "redirect:/";
         } else if (model_from_cookie != null) {
             json = model_from_cookie;
