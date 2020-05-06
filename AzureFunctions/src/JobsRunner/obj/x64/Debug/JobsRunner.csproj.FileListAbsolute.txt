@@ -1,0 +1,15 @@
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\bin\x64\Debug\JobsRunner.dll
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\bin\x64\Debug\JobsRunner.pdb
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\obj\x64\Debug\JobsRunner.dll
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\obj\x64\Debug\JobsRunner.pdb
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\bin\x64\Debug\JobsRunner.dll
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\bin\x64\Debug\JobsRunner.pdb
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\obj\x64\Debug\JobsRunner.csprojAssemblyReference.cache
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\obj\x64\Debug\JobsRunner.dll
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\obj\x64\Debug\JobsRunner.pdb
+C:\Users\Maksim\Ubuntu\idea\biostabanalyzer\AzureFunctions\src\JobsRunner\bin\x64\Debug\JobsRunner.dll
+C:\Users\Maksim\Ubuntu\idea\biostabanalyzer\AzureFunctions\src\JobsRunner\bin\x64\Debug\JobsRunner.pdb
+C:\Users\Maksim\Ubuntu\idea\biostabanalyzer\AzureFunctions\src\JobsRunner\obj\x64\Debug\JobsRunner.csprojAssemblyReference.cache
+C:\Users\Maksim\Ubuntu\idea\biostabanalyzer\AzureFunctions\src\JobsRunner\obj\x64\Debug\JobsRunner.csproj.CoreCompileInputs.cache
+C:\Users\Maksim\Ubuntu\idea\biostabanalyzer\AzureFunctions\src\JobsRunner\obj\x64\Debug\JobsRunner.dll
+C:\Users\Maksim\Ubuntu\idea\biostabanalyzer\AzureFunctions\src\JobsRunner\obj\x64\Debug\JobsRunner.pdb

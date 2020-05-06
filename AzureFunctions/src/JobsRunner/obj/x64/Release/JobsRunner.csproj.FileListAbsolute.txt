@@ -1,0 +1,5 @@
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\bin\x64\Release\JobsRunner.dll
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\bin\x64\Release\JobsRunner.pdb
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\obj\x64\Release\JobsRunner.csprojAssemblyReference.cache
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\obj\x64\Release\JobsRunner.dll
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\obj\x64\Release\JobsRunner.pdb

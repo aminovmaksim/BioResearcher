@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>BioCheckAnalyzer</name></assembly>
+<members>
+<member name="M:Util.MergeMaps``2(Microsoft.FSharp.Collections.FSharpMap{``0,``1},Microsoft.FSharp.Collections.FSharpMap{``0,``1})">
+<summary>
+ merge two maps into one
+ if duplicate keys are present then the value in map2 survives
+</summary>
+</member>
+<member name="M:Util.take``1(System.Int32,Microsoft.FSharp.Collections.FSharpList{``0})">
+<summary>
+ Sin bin for random &quot;utility&quot; code.
+</summary>
+</member>
+<member name="T:Expr.var">
+<summary>
+ An arithmetic expression.
+</summary>
+</member>
+<member name="M:Expr.simplify_expr(Expr.expr)">
+<summary>
+ Do basic simplification of an arithmetic expression
+</summary>
+</member>
+<member name="M:Expr.simplify_times(Expr.expr,Expr.expr)">
+<summary>
+ Simplify an expression of the form e1 * e2 by doing constant propagation and applying the
+ following identities:
+   0 * x = 0
+   x * 0 = 0
+   1 * x = x
+   x * 1 = x
+</summary>
+</member>
+<member name="M:Expr.simplify_minus(Expr.expr,Expr.expr)">
+<summary>
+ Simplify an expression of the form e1 + e2 by doing constant propagation and applying the
+ following identity:
+    x - 0 = x
+</summary>
+</member>
+<member name="M:Expr.simplify_plus(Expr.expr,Expr.expr)">
+<summary>
+ Simplify an expression of the form e1 + e2 by doing constant propagation and applying the
+ following identities:
+    0 + x = x
+    x + 0 = x
+</summary>
+</member>
+<member name="M:Expr.differentiate_expr(Expr.expr,System.Int32)">
+<summary>
+ Symbolically partially differentiate an expression with respect to
+ one of its free variables.  Returns a new expression, which should
+ probably be simplified before use.
+</summary>
+</member>
+<member name="M:Expr.eval_expr_int(System.Int32,Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}},Expr.expr,Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32})">
+<summary>
+ Evaluate an arithmetic expression at [node]
+</summary>
+</member>
+<member name="M:Expr.is_a_const(Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}},Expr.expr)">
+<summary>
+ is_a_const
+</summary>
+</member>
+<member name="M:Expr.fv(Expr.expr)">
+<summary>
+ FV
+</summary>
+</member>
+<member name="T:QN.interval">
+
+</member>
+<member name="T:QN.node">
+<summary>
+ A node in a QN network.
+</summary>
+</member>
+<member name="T:QN.var">
+<summary>
+ A Qualtitative Network.
+</summary>
+</member>
+<member name="M:QN.ko(Microsoft.FSharp.Collections.FSharpList{QN.node},System.Int32,System.Int32)">
+<summary>
+ Knockout the node [var] by replacing it&apos;s function with [c]
+</summary>
+</member>
+<member name="M:QN.env_complete_wrt_qn(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32})">
+<summary>
+ Check that env is complete wrt to qn
+</summary>
+</member>
+<member name="M:QN.qn_wf(Microsoft.FSharp.Collections.FSharpList{QN.node})">
+<summary>
+ Well-formed QN network
+ Raises exn if qn isn&apos;t wf.
+</summary>
+</member>
+<member name="T:Result.cex_result">
+<summary>
+ If SRNotStabilizing, then we have a CEx. 
+</summary>
+</member>
+<member name="T:Result.stability_result">
+<summary>
+ Initial stability check (yes or no). 
+</summary>
+</member>
+<member name="M:Z3Util.model_to_fixpoint(Microsoft.Z3.Model)">
+<summary>
+ Return [model] constants as a Map&lt;string,int&gt;.
+</summary>
+</member>
+<member name="M:Z3Util.getConstDecls(Microsoft.Z3.Model)">
+<summary>
+ The Z3 bug causes extra consts to appear in the model and this function filters them out.
+ See http://stackoverflow.com/questions/10983067/z3-4-0-extra-output-in-model
+</summary>
+</member>
+<member name="M:Z.expr_to_z3(Microsoft.FSharp.Collections.FSharpList{QN.node},QN.node,Expr.expr,System.Int32,Microsoft.Z3.Context)">
+<summary>
+ Z3 related stuff.
+</summary>
+</member>
+<member name="M:Counterexample.find_cex(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}},System.Boolean,Counterexample.concurrency)">
+<summary>
+ Find a counterexample to the stability of a network.
+</summary>
+</member>
+<member name="P:FNewLemmas.str_of_interval">
+<summary>
+ Attempt to tighten the bounds of an expression.
+</summary>
+</member>
+<member name="M:GenLemmas.stabilize_lazy_2(Microsoft.FSharp.Collections.FSharpList{QN.node})">
+<summary>
+ Attempt to find the unique fixpoint of a QN network.
+ But do so lazily, returning a sequence of tighter bounds until the final answer
+</summary>
+</member>
+<member name="M:GenLemmas.stabilize_lazy_1(Microsoft.FSharp.Collections.FSharpList{QN.node})">
+<summary>
+ Attempt to find the unique fixpoint of a QN network.
+ But do so lazily, returning a sequence of tighter bounds until the final answer
+</summary>
+</member>
+<member name="M:GenLemmas.stabilize_lazy(Microsoft.FSharp.Collections.FSharpList{QN.node})">
+<summary>
+ Attempt to find the unique fixpoint of a QN network.
+ But do so lazily, returning a sequence of tighter bounds until the final answer
+</summary>
+</member>
+<member name="M:Stabilize.stabilization_prover(Microsoft.FSharp.Collections.FSharpList{QN.node},System.Boolean,Counterexample.concurrency)">
+<summary>
+Algorithm 1
+</summary>
+</member>
+<member name="M:Simulate.asyncTick(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32})">
+<summary>
+One-step, asynchronous. Returns list of possible successors
+</summary>
+</member>
+<member name="M:Simulate.individualVariableTick(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32},System.Int32)">
+<summary>
+Returns the next state of a *single* variable 
+</summary>
+</member>
+<member name="M:Simulate.tick(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32})">
+<summary>
+ One-step 
+</summary>
+</member>
+<member name="M:ModelToExcel.excel_of_qn``1(``0,Microsoft.FSharp.Collections.FSharpList{QN.node},System.Int32)">
+<summary>
+ Convert qn to excel
+</summary>
+</member>
+<member name="M:ModelToExcel.printVariableToExcel(Microsoft.Office.Interop.Excel._Worksheet,System.Int32,Microsoft.FSharp.Collections.FSharpMap{System.String,System.Int32},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32},System.Int32,QN.node)">
+<summary>
+ Write all the data, functions for v. 
+</summary>
+</member>
+<member name="M:ModelToExcel.setCellText``1(Microsoft.Office.Interop.Excel._Worksheet,System.Int32,System.Int32,``0)">
+<summary>
+ [setCellText sheet x y txt] sets sheet&apos;s col x and row y cell to txt
+</summary>
+</member>
+<member name="M:ModelToExcel.excel_of_expr(Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32},System.Int32,Expr.expr)">
+<summary>
+ Translate Expr.expr to Excel formula. Current var value at state_col. 
+</summary>
+</member>
+<member name="M:ModelToExcel.col_name(System.Int32)">
+<summary>
+ Convert 1 to &apos;A&apos;, 2 to &apos;B&apos;, etc. 
+</summary>
+</member>
+<member name="P:ModelToExcel.fld_ID">
+<summary>
+ meta information about field names 
+</summary>
+</member>
+<member name="M:InitEncodingForSys.encode_boolean_paths(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.Z3.Context,Microsoft.Z3.Solver,Microsoft.FSharp.Collections.FSharpList{Microsoft.FSharp.Collections.FSharpMap{System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Int32}}})">
+<summary>
+ Encode the path 
+</summary>
+</member>
+<member name="T:GGraph.Component`1">
+<summary>
+ Each component is either a terminal or a list of components
+</summary>
+</member>
+<member name="T:GGraph.Graph`1">
+<summary>
+ type for a graph
+ every vertex must have a different label
+</summary>
+</member>
+<member name="M:GGraph.GetRecursiveStrategy``1(GGraph.Graph{``0})">
+<summary>
+ example: 1 [ 2 [ 3 4 ] ] ] 5 would return
+ 1.next = 2,    1.exit = None, 1.isHead = false
+ 2.next = 3,    2.exit = 5,    2.isHead = true
+ 3.next = 4,    3.exit = 2,    3.isHead = true
+ 4.next = 3,    4.exit = None, 4.isHead = false 
+ 5.next = None, 5.exit = None, 5.isHead = false
+</summary>
+</member>
+<member name="M:GGraph.Stringify``1(Microsoft.FSharp.Collections.FSharpList{GGraph.Component{``0}},Microsoft.FSharp.Core.FSharpFunc{``0,System.String})">
+<summary>
+ String representation of wto
+ Applying to_string to convert the labels to strings
+</summary>
+</member>
+<member name="M:GGraph.GetWeakTopologicalOrder``1(GGraph.Graph{``0})">
+<summary>
+ WTO for external use
+</summary>
+</member>
+<member name="M:GGraph.GetWeakTopologicalOrderInternal``1(GGraph.Graph{``0})">
+<summary>
+ Weak Topological Order from 
+ Efficient chaotic iteration strategies with widenings : Francois Bourdoncle
+ this implementation uses a lot of mutable data
+ to understand refer to the paper 
+ in the returned WTO a root node is added so this function is for internal use only
+</summary>
+</member>
+<member name="M:GGraph.GetSCCDecomposition``1(GGraph.Graph{``0})">
+<summary>
+ Tarjan&apos;s SCC Decomposition from Wikipedia
+</summary>
+</member>
+<member name="M:GGraph.GetAdjacencyList``1(GGraph.Graph{``0})">
+<summary>
+ Return the adjacency list of the graph
+</summary>
+</member>
+<member name="M:GGraph.AddRoot``1(GGraph.Graph{``0})">
+<summary>
+ assumes graph has at least one vertex
+ need to generate a default label
+</summary>
+</member>
+<member name="M:GGraph.Empty``1">
+<summary>
+ return empty graph of specified type of vertices
+</summary>
+</member>
+<member name="M:Shrink.Shrink``1(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}},``0,Microsoft.FSharp.Collections.FSharpMap{System.Int32,Microsoft.FSharp.Collections.FSharpSet{System.Int32}},Microsoft.FSharp.Collections.FSharpMap{System.Int32,GGraph.Strategy{System.Int32}},Microsoft.FSharp.Core.FSharpOption{System.Int32},Microsoft.FSharp.Collections.FSharpSet{System.Int32},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}})">
+<summary>
+ qnStrategy is the update order determined based on WTO. Supplied by Prover module
+ qnStartPoint is the start point of the strategy
+</summary>
+</member>
+<member name="M:Shrink.UpdateVarBounds(QN.node,Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}})">
+<summary>
+ Return updated bounds of var using curBounds of its inputs
+</summary>
+</member>
+<member name="M:Prover.doesSimulationCrossFrontier(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32},System.Int32,System.Int32)">
+<summary>
+ BH
+ checks to see if a simulation can cross the frontier
+ if it doesn&apos;t go either cutAt -&gt; cutAt+1 or cutAt+1 -&gt; cutAt
+ then we shouldn&apos;t bother running a complete simulation
+ Returns true for traces which cross frontier, false otherwise
+</summary>
+</member>
+<member name="M:Prover.SimulateForCycle(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Int32})">
+<summary>
+ starts simulation from the current point, returns 
+ Some (cyclestart, length) length can be 1
+ should never return (_,0)
+ should always terminate because the network is finite
+</summary>
+</member>
+<member name="M:Suggest.ApplySuggestion(Microsoft.FSharp.Collections.FSharpList{QN.node},Microsoft.FSharp.Collections.FSharpList{System.Tuple{QN.node,QN.node}},QN.nature)">
+<summary>
+ Add [edges] to the [qn]
+</summary>
+</member>
+<member name="M:Suggest.NoPosMatch(System.Int32,System.Int32,Microsoft.FSharp.Collections.FSharpList{System.Tuple{System.Int32,System.Int32}})">
+<summary>
+ True if no tags at any positions match
+</summary>
+</member>
+<member name="M:Suggest.ComputeShrinkCoeff(Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}},Microsoft.FSharp.Collections.FSharpMap{System.Int32,System.Tuple{System.Int32,System.Int32}})">
+<summary>
+ (Size of space before shrinking) / (size of space after shrinking)
+</summary>
+</member>
+</members>
+</doc>

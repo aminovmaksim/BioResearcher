@@ -63,6 +63,8 @@ public class TestService {
             tests.add(modelTest);
         }
 
+        
+
         TestRequest testRequest = new TestRequest();
         testRequest.setModel(bioModel);
         testRequest.setTests(tests);

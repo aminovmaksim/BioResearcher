@@ -1,0 +1,10 @@
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\bin\Debug\JobsRunner.dll
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\bin\Debug\JobsRunner.pdb
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\obj\Debug\JobsRunner.csprojAssemblyReference.cache
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\obj\Debug\JobsRunner.dll
+C:\Users\Maksim\Ubuntu\bma\src\Jobs\JobsRunner\obj\Debug\JobsRunner.pdb
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\bin\Debug\JobsRunner.dll
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\bin\Debug\JobsRunner.pdb
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\obj\Debug\JobsRunner.csprojAssemblyReference.cache
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\obj\Debug\JobsRunner.dll
+C:\Users\Maksim\Downloads\TestAzure\src\JobsRunner\obj\Debug\JobsRunner.pdb
